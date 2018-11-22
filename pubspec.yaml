@@ -1,0 +1,11 @@
+name: mapper
+description: library converts map to object and object to map
+version: 0.1.0
+# homepage: https://www.example.com
+author: 0xff00ff <email@example.com>
+
+environment:
+  sdk: '>=2.0.0 <3.0.0'
+
+dev_dependencies:
+  test: 1.5.0

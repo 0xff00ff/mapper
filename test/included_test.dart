@@ -1,18 +1,21 @@
 import 'package:test/test.dart';
 import 'package:mapper/mapper.dart';
 
+@Entity(fullMatch: true)
 class Simple {
   String strProp;
   int intProp;
   Simple2 subclass;
 }
 
+@Entity(fullMatch: true)
 class Simple2 {
   String strProp2;
   int intProp2;
   Simple3 subclass2;
 }
 
+@Entity(fullMatch: true)
 class Simple3 {
   String strProp3;
   int intProp3;
@@ -21,10 +24,10 @@ class Simple3 {
 const Map<String, dynamic> simple = const {
   "strProp": "strProp",
   // skip int
-  "subclass": <String, dynamic> {
+  "subclass": <String, dynamic>{
     "strProp2": 3, // should skip
     "intProp2": 3.14, // should skip
-    "subclass2": <String, dynamic> {
+    "subclass2": <String, dynamic>{
       "strProp3": "strProp3",
       "intProp3": 12,
     }
@@ -33,7 +36,6 @@ const Map<String, dynamic> simple = const {
 
 main() {
   test("Should convert map to object and back", () async {
-
     Simple obj = decode<Simple>(simple);
 
     expect(obj.strProp, 'strProp');
@@ -53,6 +55,5 @@ main() {
     expect(simple2['subclass']['subclass2'] is Map, true);
     expect(simple2['subclass']['subclass2']['strProp3'], 'strProp3');
     expect(simple2['subclass']['subclass2']['intProp3'], 12);
-
   });
 }

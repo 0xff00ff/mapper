@@ -17,24 +17,23 @@ class BoolParser extends Parser {
   }
 }
 
+@Entity(fullMatch: true)
 class Simple {
   String strProp;
   bool boolProp;
 }
 
 main() {
-
   test("Should convert map to object and back", () async {
+    addParser('bool', new BoolParser());
 
-      addParser('bool', new BoolParser());
+    Simple obj = new Simple();
+    obj.strProp = "string";
+    obj.boolProp = true;
 
-      Simple obj = new Simple();
-      obj.strProp = "string";
-      obj.boolProp = true;
+    Map<String, dynamic> simple = encode(obj);
 
-      Map<String, dynamic> simple = encode(obj);
-
-      expect(simple['strProp'], 'string');
-      expect(simple['boolProp'], 1);
+    expect(simple['strProp'], 'string');
+    expect(simple['boolProp'], 1);
   });
 }

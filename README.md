@@ -5,6 +5,7 @@ Simple library to convert maps to objects and objects to maps
 ```dart
 import 'package:mapper/mapper.dart';
 
+@Entity(fullMatch: true) // will map all fields
 class Simple {
   String strProp;
   int intProp;
@@ -43,6 +44,7 @@ Basic features:
 * can convert Lists and Maps (only with simple types inside)
 * can be added external converters
 * mirror fields are cache after first use to increase speed
+* add meta to control convertation process
 
 Roadmap:
 * add ability to convert complex Maps and Lists with included classes
@@ -68,9 +70,13 @@ class BoolParser extends Parser {
   }
 }
 
+@Entity(fullMatch: true)
 class Simple {
+  @Property(name: 'str') // change field name
   String strProp;
   bool boolProp;
+  @Property(ignore: true) // ignore this field
+  int intProp;
 }
 
 main() {
@@ -80,10 +86,13 @@ main() {
     Simple obj = new Simple();
     obj.strProp = "string";
     obj.boolProp = true;
+    obj.intProp = 3;
 
     Map<String, dynamic> simple = encode(obj);
 
-    simple['strProp'] == 'string'; // true
+    simple['str'] == 'string'; // true
+    simple.containsKey('strProp'); // false, key name was changed
     simple['boolProp'] == 1; // true
+    simple.containsKey('intProp'); // false, field was ignored
 }
 ```

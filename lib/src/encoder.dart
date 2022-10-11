@@ -14,21 +14,20 @@ Map<String, dynamic> toMap(InstanceMirror obj) {
     fillCachedItems(cls);
   }
 
-  final List<CacheItem> items = mirrorCache[cls.simpleName];
+  final List<CacheItem> items = mirrorCache[cls.simpleName]!;
 
   items.forEach((CacheItem item) {
 
-    if (item.property.ignore) {
+    if (item.property!.ignore) {
       return;
     }
 
-    final name = item.simpleName;
-    final mapName = item.property.name ?? item.name;
+    final mapName = item.property!.name ?? item.name;
 
 
     final value = obj.getField(item.simpleName).reflectee;
     if (parsers.containsKey(item.type)) {
-      final val = parsers[item.type].encode(value);
+      final val = parsers[item.type]!.encode(value);
       result[mapName] = val;
     } else if (null == value) {
       result[mapName] = null;

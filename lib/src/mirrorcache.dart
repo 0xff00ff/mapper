@@ -6,7 +6,7 @@ class CacheItem {
   final String type;
   final Symbol simpleName;
   final ClassMirror declarationType;
-  final Property property;
+  final Property? property;
   final bool useAnyWay;
 
   const CacheItem(this.name, this.type, this.simpleName, this.declarationType, {this.property = null, this.useAnyWay = false});
@@ -39,11 +39,9 @@ void fillCachedItems(ClassMirror cls) {
         }
       });
 
-      if (null == propMeta) {
-        propMeta = new Property(ignore: !useAnyWay);
-      }
+      propMeta = new Property(ignore: !useAnyWay);
 
-      items.add(new CacheItem(name, type, declaration.simpleName, declaration.type, property: propMeta, useAnyWay: useAnyWay));
+      items.add(new CacheItem(name, type, declaration.simpleName, declaration.type as ClassMirror, property: propMeta, useAnyWay: useAnyWay));
     }
   });
   mirrorCache[cls.simpleName] = items;

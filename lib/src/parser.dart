@@ -5,6 +5,6 @@ addParser(String type, Parser parser) {
 }
 
 abstract class Parser {
-  encode(srg);
-  decode(arg);
+  encode(dynamic srg);
+  decode(dynamic arg);
 }

@@ -43,8 +43,9 @@ main() {
 
   Map<String, dynamic> simple2 = encode(obj);
 
-  simple2['strProp'] == simple['strProp']; // true
-  simple2['intProp'] == simple['intProp']; // true
-  simple2['boolProp'] == simple['boolProp']; // true
-  simple2['doubleProp'] == simple['doubleProp']; // true
+  assert(simple2['strProp'] == simple['strProp']); // true
+  assert(simple2['intProp'] == simple['intProp']); // true
+  assert(simple2['boolProp'] == simple['boolProp']); // true
+  assert(simple2['doubleProp'] == simple['doubleProp']); // true
+  print("done");
 }

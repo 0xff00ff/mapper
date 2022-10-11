@@ -3,22 +3,22 @@ import 'package:mapper/mapper.dart';
 
 @Entity(fullMatch: true)
 class Simple {
-  String strProp;
-  int intProp;
-  Simple2 subclass;
+  String? strProp;
+  int? intProp;
+  Simple2? subclass;
 }
 
 @Entity(fullMatch: true)
 class Simple2 {
-  String strProp2;
-  int intProp2;
-  Simple3 subclass2;
+  String? strProp2;
+  int? intProp2;
+  Simple3? subclass2;
 }
 
 @Entity(fullMatch: true)
 class Simple3 {
-  String strProp3;
-  int intProp3;
+  String? strProp3;
+  int? intProp3;
 }
 
 const Map<String, dynamic> simple = const {
@@ -36,15 +36,15 @@ const Map<String, dynamic> simple = const {
 
 main() {
   test("Should convert map to object and back", () async {
-    Simple obj = decode<Simple>(simple);
+    Simple obj = decode<Simple>(simple)!;
 
     expect(obj.strProp, 'strProp');
     expect(obj.subclass is Simple2, true);
-    expect(obj.subclass.strProp2, null);
-    expect(obj.subclass.intProp2, null);
-    expect(obj.subclass.subclass2 is Simple3, true);
-    expect(obj.subclass.subclass2.strProp3, 'strProp3');
-    expect(obj.subclass.subclass2.intProp3, 12);
+    expect(obj.subclass!.strProp2, null);
+    expect(obj.subclass!.intProp2, null);
+    expect(obj.subclass!.subclass2 is Simple3, true);
+    expect(obj.subclass!.subclass2!.strProp3, 'strProp3');
+    expect(obj.subclass!.subclass2!.intProp3, 12);
 
     Map<String, dynamic> simple2 = encode(obj);
 

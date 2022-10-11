@@ -1,3 +1,7 @@
+## 0.2.1
+
+- added null safety
+
 ## 0.2.0
 
 - added meta to control conversion process

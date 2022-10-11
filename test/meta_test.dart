@@ -4,10 +4,10 @@ import 'package:test/test.dart';
 @Entity(fullMatch: true)
 class Simple {
   @Property(name: 'str') // change field name
-  String strProp;
-  bool boolProp;
+  String? strProp;
+  bool? boolProp;
   @Property(ignore: true) // ignore this field
-  int intProp;
+  int? intProp;
 }
 
 main() {

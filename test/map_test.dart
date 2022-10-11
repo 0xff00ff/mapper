@@ -3,10 +3,10 @@ import 'package:mapper/mapper.dart';
 
 @Entity(fullMatch: true)
 class Simple {
-  Map<String, String> strProp;
-  Map<String, int> intProp;
-  Map<String, bool> boolProp;
-  Map<String, double> doubleProp;
+  Map<String, String>? strProp;
+  Map<String, int>? intProp;
+  Map<String, bool>? boolProp;
+  Map<String, double>? doubleProp;
 }
 
 const Map<String, dynamic> simple = const {
@@ -18,12 +18,12 @@ const Map<String, dynamic> simple = const {
 
 main() {
   test("Should convert map to object and back", () async {
-    Simple obj = decode<Simple>(simple);
+    Simple obj = decode<Simple>(simple)!;
 
-    expect(obj.strProp['str'], simple['strProp']['str']);
-    expect(obj.intProp['int'], simple['intProp']['int']);
-    expect(obj.boolProp['bool'], simple['boolProp']['bool']);
-    expect(obj.doubleProp['double'], simple['doubleProp']['double']);
+    expect(obj.strProp!['str'], simple['strProp']['str']);
+    expect(obj.intProp!['int'], simple['intProp']['int']);
+    expect(obj.boolProp!['bool'], simple['boolProp']['bool']);
+    expect(obj.doubleProp!['double'], simple['doubleProp']['double']);
 
     Map<String, dynamic> simple2 = encode(obj);
 

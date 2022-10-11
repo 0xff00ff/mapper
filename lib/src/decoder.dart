@@ -2,11 +2,11 @@ import 'dart:mirrors';
 import 'package:mapper/src/parser.dart';
 import 'package:mapper/src/mirrorcache.dart';
 
-T decode<T>(Map<String, dynamic> obj) {
+T? decode<T>(Map<String, dynamic> obj) {
   final cls = reflectClass(T);
   final result = fromMap(obj, cls);
   if (result is T) {
-    return result;
+    return result as T;
   }
   return null;
 }
@@ -15,14 +15,12 @@ Object fromMap(Map<String, dynamic> arg, ClassMirror cl) {
   final inst = cl.newInstance(const Symbol(''), <dynamic>[]);
 
   ClassMirror cls = inst.type;
-  String className = MirrorSystem.getName(cls.simpleName);
   if (!mirrorCache.containsKey(cls.simpleName)) {
     fillCachedItems(cls);
   }
 
-  final List<CacheItem> items = mirrorCache[cls.simpleName];
+  final List<CacheItem> items = mirrorCache[cls.simpleName]!;
 
-  // cl.declarations.forEach((key, declaration) {
   items.forEach((CacheItem item) {
     fillProp(item, inst, arg);
   });
@@ -34,7 +32,7 @@ void fillFromMap(Map<String, dynamic> arg, InstanceMirror inst) {
   if (!mirrorCache.containsKey(cls.simpleName)) {
     fillCachedItems(cls);
   }
-  final List<CacheItem> items = mirrorCache[cls.simpleName];
+  final List<CacheItem> items = mirrorCache[cls.simpleName]!;
 
   // cl.declarations.forEach((key, declaration) {
   items.forEach((CacheItem item) {
@@ -44,19 +42,19 @@ void fillFromMap(Map<String, dynamic> arg, InstanceMirror inst) {
 
 fillProp(CacheItem declaration, InstanceMirror inst, Map<String, dynamic> arg) {
 
-  if (declaration.property.ignore) {
+  if (declaration.property!.ignore) {
     return;
   }
 
   final name = declaration.simpleName;
-  final mapName = declaration.property.name ?? declaration.name;
+  final mapName = declaration.property!.name ?? declaration.name;
 
   if (arg != null && arg.containsKey(mapName)) {
     final argType = arg[mapName].runtimeType.toString();
     final val = arg[declaration.name];
     if (parsers.containsKey(declaration.type)) {
       final raw = arg[mapName];
-      final val = parsers[declaration.type].decode(raw);
+      final val = parsers[declaration.type]!.decode(raw);
       inst.setField(name, val);
     } else if (declaration.type == 'dynamic') {
       inst.setField(name, arg[mapName]);

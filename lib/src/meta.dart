@@ -5,7 +5,7 @@ class Entity {
 }
 
 class Property {
-  final String name;
+  final String? name;
   final bool ignore;
 
   const Property({this.name = null, this.ignore = false});

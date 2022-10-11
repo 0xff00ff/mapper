@@ -2,14 +2,14 @@ import 'package:test/test.dart';
 import 'package:mapper/mapper.dart';
 
 class BoolParser extends Parser {
-  bool decode(val) {
+  bool? decode(val) {
     if (val is int) {
       return val == 1;
     }
     return null;
   }
 
-  int encode(val) {
+  int? encode(val) {
     if (val is bool) {
       return val == true ? 1 : 0;
     }
@@ -19,8 +19,8 @@ class BoolParser extends Parser {
 
 @Entity(fullMatch: true)
 class Simple {
-  String strProp;
-  bool boolProp;
+  String? strProp;
+  bool? boolProp;
 }
 
 main() {

@@ -26,7 +26,7 @@ main() {
     expect(simple['boolProp'], true);
     expect(simple.containsKey('intProp'), false); // field was ignored
 
-    Simple obj2 = decode(simple);
+    Simple obj2 = decode<Simple>(simple)!;
 
     expect(obj2.strProp, 'string');
     expect(obj2.boolProp, true);

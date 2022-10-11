@@ -1,3 +1,7 @@
+## 0.2.2
+
+- corrected tests, bugfixes
+
 ## 0.2.1
 
 - added null safety

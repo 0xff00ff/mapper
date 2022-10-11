@@ -1,6 +1,7 @@
 import 'dart:mirrors';
 import 'package:mapper/src/meta.dart';
 
+/// Cache item container
 class CacheItem {
   final String name;
   final String type;
@@ -12,8 +13,10 @@ class CacheItem {
   const CacheItem(this.name, this.type, this.simpleName, this.declarationType, {this.property = null, this.useAnyWay = false});
 }
 
+/// cache container
 final Map<Symbol, List<CacheItem>> mirrorCache = {};
 
+/// fills cache with new items
 void fillCachedItems(ClassMirror cls) {
 
   var useAnyWay = false;
@@ -31,7 +34,7 @@ void fillCachedItems(ClassMirror cls) {
       String name = MirrorSystem.getName(declaration.simpleName);
       final type = MirrorSystem.getName(declaration.type.simpleName);
 
-      Property propMeta;
+      Property? propMeta;
       // check meta
       declaration.metadata.forEach((InstanceMirror metaItem){
         if (metaItem.reflectee is Property) {
@@ -39,7 +42,9 @@ void fillCachedItems(ClassMirror cls) {
         }
       });
 
-      propMeta = new Property(ignore: !useAnyWay);
+      if (propMeta == null) {
+        propMeta = new Property(ignore: !useAnyWay);
+      }
 
       items.add(new CacheItem(name, type, declaration.simpleName, declaration.type as ClassMirror, property: propMeta, useAnyWay: useAnyWay));
     }

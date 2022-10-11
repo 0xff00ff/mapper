@@ -1,14 +1,14 @@
 import 'package:mapper/mapper.dart';
 
 class BoolParser extends Parser {
-  bool decode(val) {
+  bool? decode(val) {
     if (val is int) {
       return val == 1;
     }
     return null;
   }
 
-  int encode(val) {
+  int? encode(val) {
     if (val is bool) {
       return val == true ? 1 : 0;
     }
@@ -18,10 +18,10 @@ class BoolParser extends Parser {
 
 @Entity(fullMatch: true)
 class Simple {
-  String strProp;
-  int intProp;
-  bool boolProp;
-  double doubleProp;
+  String? strProp;
+  int? intProp;
+  bool? boolProp;
+  double? doubleProp;
 }
 
 const Map<String, dynamic> simple = const {
@@ -34,7 +34,7 @@ const Map<String, dynamic> simple = const {
 main() {
   addParser('bool', new BoolParser());
 
-  Simple obj = decode<Simple>(simple);
+  Simple obj = decode<Simple>(simple)!;
 
   obj.strProp; // val
   obj.intProp; // 13

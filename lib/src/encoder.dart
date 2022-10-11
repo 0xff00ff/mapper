@@ -2,12 +2,13 @@ import 'dart:mirrors';
 import 'package:mapper/src/parser.dart';
 import 'package:mapper/src/mirrorcache.dart';
 
+/// encodes an Object into a Map
 Map<String, dynamic> encode(Object obj) {
   final objMirror = reflect(obj);
-  return toMap(objMirror);
+  return _toMap(objMirror);
 }
 
-Map<String, dynamic> toMap(InstanceMirror obj) {
+Map<String, dynamic> _toMap(InstanceMirror obj) {
   final result = <String, dynamic>{};
   ClassMirror cls = obj.type;
   if (!mirrorCache.containsKey(cls.simpleName)) {
@@ -41,7 +42,7 @@ Map<String, dynamic> toMap(InstanceMirror obj) {
       DateTime date = value;
       result[mapName] = date.toIso8601String();
     } else {
-      result[mapName] = toMap(obj.getField(item.simpleName));
+      result[mapName] = _toMap(obj.getField(item.simpleName));
     }
   });
   return result;

@@ -2,16 +2,17 @@ import 'dart:mirrors';
 import 'package:mapper/src/parser.dart';
 import 'package:mapper/src/mirrorcache.dart';
 
+/// decodes a map into an Class
 T? decode<T>(Map<String, dynamic> obj) {
   final cls = reflectClass(T);
-  final result = fromMap(obj, cls);
+  final result = _fromMap(obj, cls);
   if (result is T) {
     return result as T;
   }
   return null;
 }
 
-Object fromMap(Map<String, dynamic> arg, ClassMirror cl) {
+Object _fromMap(Map<String, dynamic> arg, ClassMirror cl) {
   final inst = cl.newInstance(const Symbol(''), <dynamic>[]);
 
   ClassMirror cls = inst.type;
@@ -22,12 +23,12 @@ Object fromMap(Map<String, dynamic> arg, ClassMirror cl) {
   final List<CacheItem> items = mirrorCache[cls.simpleName]!;
 
   items.forEach((CacheItem item) {
-    fillProp(item, inst, arg);
+    _fillProp(item, inst, arg);
   });
   return inst.reflectee;
 }
 
-void fillFromMap(Map<String, dynamic> arg, InstanceMirror inst) {
+void _fillFromMap(Map<String, dynamic> arg, InstanceMirror inst) {
   ClassMirror cls = inst.type;
   if (!mirrorCache.containsKey(cls.simpleName)) {
     fillCachedItems(cls);
@@ -36,11 +37,11 @@ void fillFromMap(Map<String, dynamic> arg, InstanceMirror inst) {
 
   // cl.declarations.forEach((key, declaration) {
   items.forEach((CacheItem item) {
-    fillProp(item, inst, arg);
+    _fillProp(item, inst, arg);
   });
 }
 
-fillProp(CacheItem declaration, InstanceMirror inst, Map<String, dynamic> arg) {
+_fillProp(CacheItem declaration, InstanceMirror inst, Map<String, dynamic> arg) {
 
   if (declaration.property!.ignore) {
     return;
@@ -49,7 +50,7 @@ fillProp(CacheItem declaration, InstanceMirror inst, Map<String, dynamic> arg) {
   final name = declaration.simpleName;
   final mapName = declaration.property!.name ?? declaration.name;
 
-  if (arg != null && arg.containsKey(mapName)) {
+  if (arg.containsKey(mapName)) {
     final argType = arg[mapName].runtimeType.toString();
     final val = arg[declaration.name];
     if (parsers.containsKey(declaration.type)) {
@@ -64,35 +65,33 @@ fillProp(CacheItem declaration, InstanceMirror inst, Map<String, dynamic> arg) {
       }
     } else if (val is List) {
       if (declaration.type == 'List') {
-        inst.setField(name, fillList(val));
+        inst.setField(name, val);
       } else {
         inst.setField(name, []);
       }
     } else if (val is DateTime && declaration.type == 'DateTime') {
       inst.setField(name, val);
     } else if (val is Map && declaration.type == 'Map') {
-      inst.setField(name, fillMap(val));
+      inst.setField(name, val);
     } else {
       final ClassMirror elem = declaration.declarationType;
 
       final Map<String, dynamic> obj2 = arg[mapName];
-      if (null != obj2) {
-        final Object local = fromMap(obj2, elem);
-        inst.setField(name, local);
-      }
+      final Object local = _fromMap(obj2, elem);
+      inst.setField(name, local);
     }
   }
 }
 
-List<dynamic> fillList(List<dynamic> list) {
-  final List<dynamic> result = [];
+List<dynamic> _fillList<T>(List<dynamic> list) {
+  final List<T> result = [];
   for (var q = 0; q < list.length; q++) {
     result.add(list[q]);
   }
   return result;
 }
 
-Map<dynamic, dynamic> fillMap(Map map) {
+Map<dynamic, dynamic> _fillMap(Map map) {
   final result = <dynamic, dynamic>{};
   map.forEach((dynamic key, dynamic value) {
     result[key] = value;

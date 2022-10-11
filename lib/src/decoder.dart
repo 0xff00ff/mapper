@@ -28,19 +28,6 @@ Object _fromMap(Map<String, dynamic> arg, ClassMirror cl) {
   return inst.reflectee;
 }
 
-void _fillFromMap(Map<String, dynamic> arg, InstanceMirror inst) {
-  ClassMirror cls = inst.type;
-  if (!mirrorCache.containsKey(cls.simpleName)) {
-    fillCachedItems(cls);
-  }
-  final List<CacheItem> items = mirrorCache[cls.simpleName]!;
-
-  // cl.declarations.forEach((key, declaration) {
-  items.forEach((CacheItem item) {
-    _fillProp(item, inst, arg);
-  });
-}
-
 _fillProp(CacheItem declaration, InstanceMirror inst, Map<String, dynamic> arg) {
 
   if (declaration.property!.ignore) {
@@ -81,20 +68,4 @@ _fillProp(CacheItem declaration, InstanceMirror inst, Map<String, dynamic> arg) 
       inst.setField(name, local);
     }
   }
-}
-
-List<dynamic> _fillList<T>(List<dynamic> list) {
-  final List<T> result = [];
-  for (var q = 0; q < list.length; q++) {
-    result.add(list[q]);
-  }
-  return result;
-}
-
-Map<dynamic, dynamic> _fillMap(Map map) {
-  final result = <dynamic, dynamic>{};
-  map.forEach((dynamic key, dynamic value) {
-    result[key] = value;
-  });
-  return result;
 }

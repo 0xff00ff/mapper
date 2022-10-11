@@ -1,3 +1,7 @@
+## 0.2.3
+
+- improved analysis
+
 ## 0.2.2
 
 - corrected tests, bugfixes

@@ -1,6 +1,6 @@
 name: mapper
 description: Library converts map to object and object to map. Can use external converters for custom complex types. 
-version: 0.2.2
+version: 0.2.3
 homepage: https://github.com/0xff00ff/mapper
 
 environment:
